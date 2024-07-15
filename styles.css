@@ -1,0 +1,171 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: url('3.webp') no-repeat center center fixed;
+    background-size: cover;
+}
+
+#search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    width: 25%;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#pokemon-search {
+    padding: 10px;
+    border-radius: 20px;
+    outline: none;
+    font-size: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    width: calc(100% - 100px);
+}
+
+#search-button {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-left: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-30px);
+    }
+    60% {
+        transform: translateY(-15px);
+    }
+}
+
+.pokemon-card {
+    cursor: pointer;
+}
+
+.pokemon-card img {
+    width: 300px;
+    height: 300px;
+}
+
+.details {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: none;
+}
+
+#left-details {
+    left: 5%;
+}
+
+#right-details {
+    right: 5%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #ffcb05;
+    color: #2a75bb;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+td {
+    background-color: #ffffff;
+    color: #333333;
+}
+
+tr:nth-child(even) td {
+    background-color: #f9f9f9;
+}
+
+tr:hover td {
+    background-color: #ffcb05;
+    color: #ffffff;
+}
+
+tr:hover th {
+    background-color: #ffcb05;
+    color: #2a75bb;
+}
+
+.show-details {
+    display: block !important;
+}
+
+#stats-chart-container {
+    width: 100%;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+#compare-container {
+    position: fixed;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+    display: none;
+}
+
+#comparison-icon {
+    position: fixed;
+    bottom: 10px;
+    right: 20px;
+}
+
+
+#pokeball {
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+    animation: bounce 2s infinite;
+    position: fixed;
+    left: 45%;
+    bottom: 20px;
+    transform: translateX(-50%);
+}

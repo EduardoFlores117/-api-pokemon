@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Info</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="search-container" class="mb-4 fixed-top">
+        <div class="input-group">
+            <input type="text" id="pokemon-search" class="form-control" placeholder="Search Pokémon" autocomplete="off">
+            <ul id="suggestions" class="list-group position-absolute w-100"></ul>
+            <button id="search-button" class="btn btn-warning text-primary">Search</button>
+        </div>
+    </div>
+    <div id="background" class="container-fluid d-flex flex-column align-items-center justify-content-center vh-100">
+        <div id="pokemon-container" class="text-center mb-4"></div>
+        <img src="pokebola.gif" id="pokeball" alt="Pokéball">
+        <div id="left-details" class="details"></div>
+        <div id="right-details" class="details">
+            <canvas id="stats-chart"></canvas>
+        </div>
+    </div>
+
+    <div id="compare-container" class="mb-4">
+        <div class="input-group">
+            <input type="text" id="compare-pokemon1" class="form-control" placeholder="First Pokémon">
+            <input type="text" id="compare-pokemon2" class="form-control" placeholder="Second Pokémon">
+            <button id="compare-button" class="btn btn-warning text-primary">Compare</button>
+        </div>
+    </div>
+
+    <div id="comparison-icon" class="fixed-bottom mb-4">
+        <button class="btn btn-primary">Compare</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
