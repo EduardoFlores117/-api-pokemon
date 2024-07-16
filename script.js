@@ -4,22 +4,54 @@ const searchInput = document.getElementById('pokemon-search');
 const suggestions = document.getElementById('suggestions');
 const leftDetails = document.getElementById('left-details');
 const rightDetails = document.getElementById('right-details');
-const statsChart = document.getElementById('stats-chart').getContext('2d');
+const statsChartCtx = document.getElementById('stats-chart').getContext('2d');
 const compareContainer = document.getElementById('compare-container');
-const comparisonIcon = document.getElementById('comparison-icon');
+const toggleSearchButton = document.getElementById('toggle-search');
+const toggleCompareButton = document.getElementById('toggle-compare');
 const compareButton = document.getElementById('compare-button');
 const compareInput1 = document.getElementById('compare-pokemon1');
 const compareInput2 = document.getElementById('compare-pokemon2');
+const pokeball = document.getElementById('pokeball');
+
+document.addEventListener('DOMContentLoaded', function() {
+    setupMuteButton();
+    playMusic();
+    setupPokeball();
+});
+
+function playMusic() {
+    var musica = document.getElementById('Music');
+    musica.play().catch(error => {
+        console.log("Reproducción automática bloqueada por el navegador.");
+    });
+}
+
+function setupMuteButton() {
+    const muteButton = document.getElementById('mute-button');
+    muteButton.addEventListener('click', function() {
+        const musica = document.getElementById('Music');
+        if (musica.muted) {
+            musica.muted = false;
+            muteButton.innerHTML = '<i class="fas fa-volume-up"></i>'; // Icono para desmutear
+        } else {
+            musica.muted = true;
+            muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>'; // Icono para silenciar
+        }
+    });
+}
 
 let chart;
+let comparing = false;
 
 const fetchPokemon = async (pokemon) => {
     try {
+        console.log(`Fetching data for: ${pokemon}`); // Añadir logging
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.toLowerCase()}`);
         if (!response.ok) {
             throw new Error('Pokémon not found');
         }
         const data = await response.json();
+        console.log(data); // Añadir logging
         const speciesResponse = await fetch(data.species.url);
         const speciesData = await speciesResponse.json();
         const weaknesses = await fetchWeaknesses(data.types);
@@ -44,10 +76,12 @@ const displayPokemon = (pokemon, speciesData, weaknesses) => {
     const pokemonCard = document.createElement('div');
     pokemonCard.classList.add('pokemon-card');
     pokemonCard.innerHTML = `
-        <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
+        <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" class="pokemon-image">
     `;
     pokemonCard.addEventListener('click', () => showDetails(pokemon, speciesData, weaknesses));
     pokemonContainer.appendChild(pokemonCard);
+
+    showDetails(pokemon, speciesData, weaknesses); // Mostrar detalles automáticamente
 };
 
 const showDetails = (pokemon, speciesData, weaknesses) => {
@@ -72,7 +106,7 @@ const showDetails = (pokemon, speciesData, weaknesses) => {
         chart.destroy();
     }
 
-    chart = new Chart(statsChart, {
+    chart = new Chart(statsChartCtx, {
         type: 'radar',
         data: {
             labels: statsLabels,
@@ -109,6 +143,7 @@ const showSuggestions = async (input) => {
             suggestion.addEventListener('click', () => {
                 searchInput.value = pokemon.name;
                 suggestions.innerHTML = '';
+                fetchPokemon(pokemon.name); 
             });
             suggestions.appendChild(suggestion);
         });
@@ -117,6 +152,7 @@ const showSuggestions = async (input) => {
 
 const fetchAndComparePokemons = async (pokemon1, pokemon2) => {
     try {
+        console.log(`Comparing: ${pokemon1} and ${pokemon2}`); // Añadir logging
         const responses = await Promise.all([
             fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon1.toLowerCase()}`),
             fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon2.toLowerCase()}`)
@@ -127,6 +163,7 @@ const fetchAndComparePokemons = async (pokemon1, pokemon2) => {
             }
             return response.json();
         }));
+        console.log(data); // Añadir logging
         const weaknesses1 = await fetchWeaknesses(data[0].types);
         const weaknesses2 = await fetchWeaknesses(data[1].types);
         displayComparison(data[0], data[1], weaknesses1, weaknesses2);
@@ -138,7 +175,7 @@ const fetchAndComparePokemons = async (pokemon1, pokemon2) => {
 const displayComparison = (pokemon1, pokemon2, weaknesses1, weaknesses2) => {
     leftDetails.innerHTML = `
         <table>
-            <tr><th>${pokemon1.name}</th><th>${pokemon2.name}</th></tr>
+            <tr><td>Name: ${pokemon1.name}</td><td>Name: ${pokemon2.name}</td></tr>
             <tr><td>ID: ${pokemon1.id}</td><td>ID: ${pokemon2.id}</td></tr>
             <tr><td>Height: ${pokemon1.height / 10} m</td><td>Height: ${pokemon2.height / 10} m</td></tr>
             <tr><td>Weight: ${pokemon1.weight / 10} kg</td><td>Weight: ${pokemon2.weight / 10} kg</td></tr>
@@ -148,21 +185,19 @@ const displayComparison = (pokemon1, pokemon2, weaknesses1, weaknesses2) => {
             <tr><td>Weaknesses: ${weaknesses1.join(', ')}</td><td>Weaknesses: ${weaknesses2.join(', ')}</td></tr>
         </table>
     `;
-    leftDetails.classList.add('show-details');
 
     const stats1 = pokemon1.stats.map(stat => stat.base_stat);
-    const statsLabels1 = pokemon1.stats.map(stat => stat.stat.name);
     const stats2 = pokemon2.stats.map(stat => stat.base_stat);
-    const statsLabels2 = pokemon2.stats.map(stat => stat.stat.name);
+    const statsLabels = pokemon1.stats.map(stat => stat.stat.name);
 
     if (chart) {
         chart.destroy();
     }
 
-    chart = new Chart(statsChart, {
+    chart = new Chart(statsChartCtx, {
         type: 'radar',
         data: {
-            labels: statsLabels1,
+            labels: statsLabels,
             datasets: [
                 {
                     label: pokemon1.name,
@@ -193,24 +228,73 @@ const displayComparison = (pokemon1, pokemon2, weaknesses1, weaknesses2) => {
 };
 
 searchButton.addEventListener('click', () => {
-    const pokemonName = searchInput.value.trim();
-    if (pokemonName) {
-        fetchPokemon(pokemonName);
-    }
+    const pokemon = searchInput.value;
+    fetchPokemon(pokemon);
 });
 
-searchInput.addEventListener('input', (e) => {
-    showSuggestions(e.target.value);
-});
-
-comparisonIcon.addEventListener('click', () => {
-    compareContainer.classList.toggle('show-details');
+searchInput.addEventListener('input', () => {
+    const input = searchInput.value;
+    showSuggestions(input);
 });
 
 compareButton.addEventListener('click', () => {
-    const pokemon1 = compareInput1.value.trim();
-    const pokemon2 = compareInput2.value.trim();
-    if (pokemon1 && pokemon2) {
-        fetchAndComparePokemons(pokemon1, pokemon2);
-    }
+    const pokemon1 = compareInput1.value;
+    const pokemon2 = compareInput2.value;
+    fetchAndComparePokemons(pokemon1, pokemon2);
 });
+
+toggleSearchButton.addEventListener('click', () => {
+    const searchSection = document.querySelector('.search-section');
+    const compareSection = document.querySelector('.compare-section');
+    searchSection.classList.remove('hidden');
+    compareSection.classList.add('hidden');
+    comparing = false;
+    clearDetails();
+});
+
+toggleCompareButton.addEventListener('click', () => {
+    const searchSection = document.querySelector('.search-section');
+    const compareSection = document.querySelector('.compare-section');
+    searchSection.classList.add('hidden');
+    compareSection.classList.remove('hidden');
+    comparing = true;
+    clearDetails();
+});
+
+function clearDetails() {
+    leftDetails.innerHTML = '';
+    rightDetails.innerHTML = '';
+    if (chart) {
+        chart.destroy();
+    }
+}
+
+function setupPokeball() {
+    const pokeball = document.getElementById('pokeball');
+    let isDragging = false;
+    let originalPosition = { left: pokeball.style.left, bottom: pokeball.style.bottom };
+
+    pokeball.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        document.body.style.cursor = 'grabbing';
+        originalPosition = { left: pokeball.style.left, bottom: pokeball.style.bottom };
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            pokeball.style.left = `${e.clientX - pokeball.offsetWidth / 2}px`;
+            pokeball.style.bottom = `${window.innerHeight - e.clientY - pokeball.offsetHeight / 2}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            document.body.style.cursor = 'default';
+            // Regresar la pokebola a su posición original
+            pokeball.style.left = originalPosition.left;
+            pokeball.style.bottom = originalPosition.bottom;
+        }
+    });
+}
