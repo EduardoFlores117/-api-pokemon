@@ -93,7 +93,7 @@ table {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-th, td {
+th, td {    
     padding: 10px;
     border-bottom: 1px solid #ddd;
 }
@@ -154,18 +154,88 @@ canvas {
 
 #comparison-icon {
     position: fixed;
-    bottom: 10px;
-    right: 20px;
+    bottom: 650px;
+    left: 1285px;
 }
 
-
 #pokeball {
-    width: 150px;
-    height: 150px;
-    cursor: pointer;
     animation: bounce 2s infinite;
     position: fixed;
     left: 45%;
-    bottom: 20px;
+    bottom: -30px;
+    cursor: grab;
+    transition: width 0.2s ease, height 0.2s ease;
+}
+
+#pokeball:hover {
+    transform: translateX(-50%) rotate(20deg);
+}
+
+.speech-bubble {
+    position: relative;
+    background: #ffcc00;
+    border-radius: .4em;
+    padding: 10px;
+    width: 100px;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: #000;
+    top: 540px;
+}
+
+.speech-bubble p {
+    margin: 0;
+}
+
+.speech-bubble .arrow {
+    position: absolute;
+    bottom: -10px;
+    left: 30%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #ffcc00;
     transform: translateX(-50%);
+}
+
+#evolution-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #2a75bb;
+    color: #ffcb05;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+#evolutions-container {
+    display: none;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.search-section {
+    display: block;
+}
+
+.compare-section {
+    display: none;
 }
