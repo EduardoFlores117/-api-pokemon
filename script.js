@@ -143,7 +143,7 @@ const showSuggestions = async (input) => {
             suggestion.addEventListener('click', () => {
                 searchInput.value = pokemon.name;
                 suggestions.innerHTML = '';
-                fetchPokemon(pokemon.name); 
+                fetchPokemon(pokemon.name); // Fetch the selected Pokémon
             });
             suggestions.appendChild(suggestion);
         });
@@ -249,7 +249,7 @@ toggleSearchButton.addEventListener('click', () => {
     searchSection.classList.remove('hidden');
     compareSection.classList.add('hidden');
     comparing = false;
-    clearDetails();
+    clearDetails(); // Clear previous details when switching
 });
 
 toggleCompareButton.addEventListener('click', () => {
@@ -258,7 +258,7 @@ toggleCompareButton.addEventListener('click', () => {
     searchSection.classList.add('hidden');
     compareSection.classList.remove('hidden');
     comparing = true;
-    clearDetails();
+    clearDetails(); // Clear previous details when switching
 });
 
 function clearDetails() {
