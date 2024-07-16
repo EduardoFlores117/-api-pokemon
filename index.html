@@ -3,42 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon Info</title>
+    <title>PokéInfo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="logo.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <div id="search-container" class="mb-4 fixed-top">
+    <div id="search-container" class="search-section mb-4">
         <div class="input-group">
             <input type="text" id="pokemon-search" class="form-control" placeholder="Search Pokémon" autocomplete="off">
             <ul id="suggestions" class="list-group position-absolute w-100"></ul>
             <button id="search-button" class="btn btn-warning text-primary">Search</button>
         </div>
     </div>
-    <div id="background" class="container-fluid d-flex flex-column align-items-center justify-content-center vh-100">
-        <div id="pokemon-container" class="text-center mb-4"></div>
-        <img src="pokebola.gif" id="pokeball" alt="Pokéball">
+    <div class="speech-bubble">
+        <p>Move me!</p>
+        <div class="arrow"></div>
+    </div>
+        <div id="pokeball">
+            <img src="pokebola.gif" alt="Pokéball" class="fixed-bottom mb-4" style="width: 150px; height: 150px;">
+        </div>
+
         <div id="left-details" class="details"></div>
         <div id="right-details" class="details">
             <canvas id="stats-chart"></canvas>
         </div>
-    </div>
+        <div id="evolutions-container" class="details"></div>
 
-    <div id="compare-container" class="mb-4">
-        <div class="input-group">
-            <input type="text" id="compare-pokemon1" class="form-control" placeholder="First Pokémon">
-            <input type="text" id="compare-pokemon2" class="form-control" placeholder="Second Pokémon">
-            <button id="compare-button" class="btn btn-warning text-primary">Compare</button>
-        </div>
+    <div id="compare-container" class="compare-section hidden">
+        <input type="text" id="compareInput1" placeholder="First Pokémon">
+        <input type="text" id="compareInput2" placeholder="Second Pokémon">
+        <button id="compareButton">Compare</button>
+        <div id="leftDetails"></div>
+        <div id="rightDetails"></div>
     </div>
 
     <div id="comparison-icon" class="fixed-bottom mb-4">
-        <button class="btn btn-primary">Compare</button>
+        <div class="btn-group" role="group" aria-label="Toggle Search/Compare">
+            <button id="toggle-search" type="button" class="btn btn-primary active">
+                <i class="fas fa-search"></i>
+            </button>
+            <button id="toggle-compare" type="button" class="btn btn-secondary">Compare</button>
+        </div>
+    </div>
+
+    <div id="mute-button-container" class="fixed-bottom mb-4">
+        <button id="mute-button" class="btn btn-secondary">
+            <i class="fas fa-volume-up"></i>
+        </button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="script.js"></script>
+    <audio src="pokemusica.mp3" loop id="Music" autoplay></audio>
 </body>
 </html>
