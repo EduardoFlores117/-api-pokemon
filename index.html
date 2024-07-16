@@ -22,6 +22,14 @@
         <p>Move me!</p>
         <div class="arrow"></div>
     </div>
+    <div id="background" class="container-fluid d-flex flex-column align-items-center justify-content-center vh-100">
+        <div id="pokemon-container" class="text-center mb-4">
+            <div class="pokemon-card">
+                <img src="9.png" id="pokemon-image" alt="Pokémon Image" style="width: 600px; height: auto;">
+                <p id="pokemon-name"></p>
+                <button id="evolution-button" class="btn btn-primary"></button>
+            </div>
+        </div>
         <div id="pokeball">
             <img src="pokebola.gif" alt="Pokéball" class="fixed-bottom mb-4" style="width: 150px; height: 150px;">
         </div>
@@ -31,6 +39,7 @@
             <canvas id="stats-chart"></canvas>
         </div>
         <div id="evolutions-container" class="details"></div>
+    </div>
 
     <div id="compare-container" class="compare-section hidden">
         <input type="text" id="compareInput1" placeholder="First Pokémon">
